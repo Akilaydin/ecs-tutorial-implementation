@@ -2,6 +2,10 @@
   "dependencies": {
     "com.madsbangh.easybuttons": "https://github.com/madsbangh/EasyButtons.git#upm",
     "com.origames.com.origames.extensions": "https://github.com/Akilaydin/OriGamesExtensions.git",
+    "com.leopotam.ecslite": "https://github.com/Leopotam/ecslite.git",
+    "com.leopotam.ecslite.di": "https://github.com/Leopotam/ecslite-di.git",
+    "com.leopotam.ecslite.unityeditor": "https://github.com/Leopotam/ecslite-unityeditor.git",
+    "com.leopotam.ecslite.extendedsystems": "https://github.com/Leopotam/ecslite-extendedsystems.git",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.editorcoroutines": "1.0.0",
     "com.unity.feature.2d": "1.0.0",
