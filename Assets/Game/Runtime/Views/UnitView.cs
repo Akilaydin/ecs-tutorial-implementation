@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using Client.Components;
+
+using Leopotam.EcsLite;
+
+using UnityEngine;
 
 namespace Client.Views
 {
@@ -9,7 +13,16 @@ namespace Client.Views
 
 		[SerializeField] private SpriteRenderer _spriteRenderer;
 		[SerializeField] private Animator _animator;
+		
+		private int _entity;
+		private EcsWorld _world;
 
+		public void Construct(int entity, EcsWorld world)
+		{
+			_entity = entity;
+			_world = world;
+		}
+		
 		public void Move(Vector3 translation)
 		{
 			transform.Translate(translation);
@@ -43,6 +56,14 @@ namespace Client.Views
 		public void SetActive(bool state)
 		{
 			gameObject.SetActive(state);
+		}
+		
+		private void OnCollisionEnter2D(Collision2D _)
+		{
+			var entity = _world.NewEntity();
+			var pool = _world.GetPool<CollisionEvent>();
+			ref var collisionEvent = ref pool.Add(entity);
+			collisionEvent.CollidedEntity = _entity;
 		}
 	}
 }

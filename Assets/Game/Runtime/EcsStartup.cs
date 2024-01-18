@@ -1,9 +1,11 @@
 #region
+using Client.Components;
 using Client.Services;
 using Client.Systems;
 
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using Leopotam.EcsLite.ExtendedSystems;
 using Leopotam.EcsLite.UnityEditor;
 
 using UnityEngine;
@@ -28,6 +30,9 @@ namespace Client
 				.Add(new PlayerInputSystem())
 				.Add(new MovementSystem())
 				.Add(new EnemiesSystem())
+				.Add(new ScoreCounterSystem())
+				.Add(new EndgameSystem())
+				.DelHere<CollisionEvent>()
                 #endif
 				.Inject(_sceneService)
 				.Init();

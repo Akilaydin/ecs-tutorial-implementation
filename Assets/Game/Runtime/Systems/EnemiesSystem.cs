@@ -13,6 +13,8 @@ namespace Client.Systems
 		private EcsWorldInject _world;
 		private EcsCustomInject<SceneService> _sceneService;
 		private EcsPoolInject<UnitComponent> _unitComponentsPool;
+		private EcsPoolInject<LifetimeComponent> _lifetimeComponentsPool;
+		private EcsFilterInject<Inc<LifetimeComponent>> _lifetimeFilter;
 
 		private float _spawnInterval;
 		private Camera _camera;
@@ -25,7 +27,13 @@ namespace Client.Systems
 
 		void IEcsRunSystem.Run(IEcsSystems systems)
 		{
+			if (_sceneService.Value.GameOver)
+			{
+				return;
+			}
+
 			CreateEnemy();
+			CheckEnemyLifetime();
 		}
 		
 		private void CreateEnemy()
@@ -45,9 +53,32 @@ namespace Client.Systems
 			var enemyEntity = _world.Value.NewEntity();
 			ref var unitComponent = ref _unitComponentsPool.Value.Add(enemyEntity);
 			unitComponent.View = enemyView;
+			unitComponent.View.Construct(enemyEntity, _world.Value);
 			unitComponent.Velocity = Vector3.up * _sceneService.Value.EnemyMoveSpeed;
+
+			ref var lifetimeComponent = ref _lifetimeComponentsPool.Value.Add(enemyEntity);
+			lifetimeComponent.Value = 3;
 		}
 		
+		private void CheckEnemyLifetime()
+		{
+			foreach (var entity in _lifetimeFilter.Value)
+			{
+				ref var lifetimeComponent = ref _lifetimeComponentsPool.Value.Get(entity);
+				lifetimeComponent.Value -= Time.deltaTime;
+
+				if (lifetimeComponent.Value > 0)
+				{
+					continue;
+				}
+
+				ref var unitComponent = ref _unitComponentsPool.Value.Get(entity);
+				_sceneService.Value.ReleaseEnemy(unitComponent.View);
+				
+				_world.Value.DelEntity(entity);
+			}
+		}
+
 		private Vector3 GetOutOfScreenPosition()
 		{
 			var randomX = Random.Range(-1000, 1000);

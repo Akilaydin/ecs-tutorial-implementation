@@ -11,9 +11,13 @@ namespace Client.Services
 		[field: SerializeField] public float PlayerMoveSpeed { get; private set; } = 10;
 		[field: SerializeField] public UnitView EnemyViewPrefab { get; private set; }
 		[field: SerializeField] public Camera Camera { get; private set; }
-		[field: SerializeField] public float EnemyMoveSpeed { get; private set; } = 13;
+		[field: SerializeField] public float EnemyMoveSpeed { get; private set; } = 6;
 		[field: SerializeField] public float EnemySpawnInterval { get; private set; } = 0.5f;
-    
+		[field: SerializeField] public CounterView CounterView { get; private set; }
+		[field: SerializeField] public PopupView PopupView { get; private set; }
+
+		public bool GameOver { get; set; }
+
 		private ObjectPool<UnitView> _unitsPool;
 
 		private void Awake()

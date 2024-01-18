@@ -25,6 +25,8 @@ namespace Client.Systems
 			ref var playerComponent = ref _unitComponentsPool.Value.Add(_playerEntity);
 
 			playerComponent.View = _sceneData.Value.PlayerView;
+			
+			playerComponent.View.Construct(_playerEntity, _world.Value);
 		}
 		
 		void IEcsRunSystem.Run(IEcsSystems systems)
